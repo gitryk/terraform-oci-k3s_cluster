@@ -4,6 +4,7 @@ deployment:
   dnsConfig:
     nameservers:
       - 10.43.0.10
+      - 8.8.8.8
     searches:
       - traefik-service.svc.cluster.local
       - svc.cluster.local
