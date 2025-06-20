@@ -1,6 +1,13 @@
 deployment:
   kind: DaemonSet
   dnsPolicy: ClusterFirst
+  dnsConfig:
+    nameservers:
+      - 10.43.0.10
+    searches:
+      - traefik-service.svc.cluster.local
+      - svc.cluster.local
+      - cluster.local
 
 hostNetwork: true
 
