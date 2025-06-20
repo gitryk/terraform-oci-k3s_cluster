@@ -13,6 +13,6 @@ lapi:
     - name: ENROLL_KEY
       value: "CHANGEENROLLKEY"
     - name: ENROLL_INSTANCE_NAME
-      value: "my-k8s-cluster"
+      value: "APPNAME-cluster"
     - name: ENROLL_TAGS
-      value: "k8s linux test"
+      value: "APPNAME"
