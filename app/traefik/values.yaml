@@ -34,10 +34,3 @@ entryPoints:
 
 dashboard:
   enabled: true
-
-experimental:
-  plugins:
-    enabled: true
-
-additionalArguments:
-  - "--experimental.plugins.bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin@v1.4.2"
