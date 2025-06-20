@@ -1,0 +1,42 @@
+deployment:
+  kind: DaemonSet
+
+hostNetwork: true
+
+kubernetesCRD:
+  enabled: true
+
+tolerations:
+  - operator: "Exists"
+
+nodeSelector:
+  node-role.kubernetes.io/control-plane: "true"
+
+updateStrategy:
+  rollingUpdate:
+    maxUnavailable: 1
+    maxSurge: null
+  type: RollingUpdate
+
+ports:
+  web:
+    port: 8080
+  websecure:
+    port: 8443
+  traefik:
+    port: 8000
+    
+entryPoints:
+  web:
+    address: ":8080"
+  websecure:
+    address: ":8443"
+
+dashboard:
+  enabled: true
+
+experimental:
+  plugins:
+    bouncer:
+      moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
+      version: v1.4.2
