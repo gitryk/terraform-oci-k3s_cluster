@@ -89,6 +89,7 @@ function install_k3s { #k3s 설치
     echo "[+] K3s API server is ready"
 
     apt-get install -y helm
+    mkdir -p $USER_HOME/app
   else
     echo "[*] Waiting for cluster to be ready..." #메인 서버가 응답할 때까지 대기, -sk 옵션이여야 살아났을떄 401반환
     until curl -sk https://$MASTER_IP:6443/healthz >/dev/null 2>&1; do
@@ -106,19 +107,19 @@ function install_traefik {
   helm repo add traefik https://traefik.github.io/charts
   helm repo update
 
-  mkdir -p $USER_HOME/app
-  curl -o $USER_HOME/app/traefik.yaml $GIT_ADDRESS/traefik.yaml
-  curl -o $USER_HOME/app/traefik-dashboard.yaml $GIT_ADDRESS/traefik-dashboard.yaml
+  mkdir -p $USER_HOME/app/traefik
+  curl -o $USER_HOME/app/traefik/values.yaml $GIT_ADDRESS/traefik/values.yaml
+  curl -o $USER_HOME/app/traefik/ingressroute.yaml $GIT_ADDRESS/traefik/ingressroute.yaml
 
-  sed -i "s|domain.com|$DOMAIN|g" $USER_HOME/app/traefik-dashboard.yaml #디폴트 도메인을 선언한 도메인으로 수정하기
+  sed -i "s|domain.com|$DOMAIN|g" $USER_HOME/app/traefik/ingressroute.yaml #디폴트 도메인을 선언한 도메인으로 수정하기
 
   helm install traefik traefik/traefik \
     --kubeconfig /etc/rancher/k3s/k3s.yaml \
     --namespace traefik-service \
     --create-namespace \
-    -f $USER_HOME/app/traefik.yaml
+    -f $USER_HOME/app/traefik/values.yaml
 
-  kubectl apply -f $USER_HOME/app/traefik-dashboard.yaml #helm 레포 설치와 별도로 해야 적용됨
+  kubectl apply -f $USER_HOME/app/traefik/ingressroute.yaml #helm 레포 설치와 별도로 해야 적용됨
 }
 
 function install_longhorn {
