@@ -1,13 +1,10 @@
 deployment:
-  kind: DaemonSet
-
-hostNetwork: true
+  enabled: true
+  kind: Deployment
+  replicas: 3 
 
 kubernetesCRD:
   enabled: true
-
-tolerations:
-  - operator: "Exists"
 
 nodeSelector:
   node-role.kubernetes.io/control-plane: "true"
@@ -20,17 +17,15 @@ updateStrategy:
 
 ports:
   web:
-    port: 8080
+    port: 80
   websecure:
-    port: 8443
-  traefik:
-    port: 8000
+    port: 443
 
 entryPoints:
   web:
-    address: ":8080"
+    address: ":80"
   websecure:
-    address: ":8443"
+    address: ":443"
 
 dashboard:
   enabled: true
