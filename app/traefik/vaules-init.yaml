@@ -1,5 +1,6 @@
 deployment:
   kind: DaemonSet
+  dnsPolicy: ClusterFirst
 
 hostNetwork: true
 
