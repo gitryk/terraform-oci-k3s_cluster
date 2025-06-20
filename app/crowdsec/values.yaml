@@ -1,0 +1,18 @@
+container_runtime: containerd
+agent:
+  acquisition:
+    # The namespace where the pod is located
+    - namespace: traefik-service
+      podName: traefik-*
+      program: traefik
+  env:
+    - name: COLLECTIONS
+      value: "crowdsecurity/traefik"
+lapi:
+  env:
+    - name: ENROLL_KEY
+      value: "CHANGEENROLLKEY"
+    - name: ENROLL_INSTANCE_NAME
+      value: "my-k8s-cluster"
+    - name: ENROLL_TAGS
+      value: "k8s linux test"
