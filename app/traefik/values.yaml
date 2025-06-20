@@ -21,11 +21,15 @@ updateStrategy:
 ports:
   web:
     port: 8080
+    middlewares:
+      - traefik-service-bouncer@kubernetescrd
   websecure:
     port: 8443
+    middlewares:
+      - traefik-service-bouncer@kubernetescrd
   traefik:
     port: 8000
-
+    
 entryPoints:
   web:
     address: ":8080"
