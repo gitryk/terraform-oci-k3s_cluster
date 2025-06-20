@@ -37,7 +37,9 @@ dashboard:
 
 experimental:
   plugins:
-    enabled: true
+    bouncer:
+      moduleName: github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin
+      version: v1.4.2
 
 additionalArguments:
   - "--experimental.plugins.bouncer.modulename=github.com/maxlerebourg/crowdsec-bouncer-traefik-plugin@v1.4.2"
