@@ -28,9 +28,3 @@ longhornUI:
   tolerations:
     - operator: "Exists"
   nodeSelector: {}
-
-ingress:
-  enabled: true
-  host: longhorn.domain.com
-  ingressClassName: traefik
-  tls: false
