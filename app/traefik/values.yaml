@@ -47,7 +47,6 @@ entryPoints:
 dashboard:
   enabled: true
 
-
 persistence:
   enabled: true
   volumeName: traefik-logs
