@@ -1,0 +1,20 @@
+persistence:
+  enabled: true
+  storageClass: longhorn
+  accessMode: ReadWriteMany
+  size: 1Gi
+  path: /logs/traefik
+
+logs:
+  access:
+    enabled: true
+    format: json
+    filePath: /logs/traefik/access.log
+    filters:
+      statuscodes: ["200-299", "400-599"]
+    bufferingSize: 0
+    fields:
+    headers:
+      defaultMode: drop
+      names:
+          User-Agent: keep
