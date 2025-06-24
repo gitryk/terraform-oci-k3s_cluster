@@ -1,0 +1,9 @@
+extraVolumes:
+  - name: traefik-logs
+    persistentVolumeClaim:
+      claimName: traefik-log
+
+extraVolumeMounts:
+  - name: traefik-logs
+    mountPath: /logs/traefik
+    readOnly: true
