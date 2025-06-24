@@ -8,7 +8,10 @@ spec:
   accessModes:
     - ReadWriteMany
   storageClassName: longhorn
+  persistentVolumeReclaimPolicy: Retain
   csi:
     driver: driver.longhorn.io
     volumeHandle: traefik-logs
-  persistentVolumeReclaimPolicy: Retain
+    volumeAttributes:
+      numberOfReplicas: '3'
+      staleReplicaTimeout: '2880'
