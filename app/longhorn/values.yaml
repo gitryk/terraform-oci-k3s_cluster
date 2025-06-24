@@ -9,6 +9,8 @@ defaultSettings:
   backupTargetCredentialSecret: ""
   guaranteedEngineManagerCPU: 10m
   guaranteedReplicaManagerCPU: 10m
+  nfsExportOptions: "nolock,async,no_root_squash"
+  createDefaultDiskLabeledNodes: true
 
 persistence:
   defaultClass: true
