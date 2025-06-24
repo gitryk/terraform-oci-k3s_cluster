@@ -16,3 +16,22 @@ lapi:
       value: "APPNAME-cluster"
     - name: ENROLL_TAGS
       value: "APPNAME"
+
+extraVolumes:
+  - name: traefik-logs
+    persistentVolumeClaim:
+      claimName: traefik-log
+      
+  - name: acquis-cm
+    configMap:
+      name: crowdsec-acquis
+
+extraVolumeMounts:
+  - name: traefik-logs
+    mountPath: /logs/traefik
+    readOnly: true
+    
+  - name: acquis-cm
+    mountPath: /etc/crowdsec/acquis.yaml
+    subPath: acquis.yaml
+    readOnly: true
