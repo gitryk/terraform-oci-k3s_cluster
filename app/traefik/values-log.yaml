@@ -1,3 +1,4 @@
+
 persistence:
   enabled: true
   storageClass: longhorn
@@ -9,7 +10,6 @@ logs:
   access:
     enabled: true
     format: json
-    volumeName: traefik-logs
     filePath: /logs/traefik/access.log
     filters:
       statuscodes: "200-299,400-599"
