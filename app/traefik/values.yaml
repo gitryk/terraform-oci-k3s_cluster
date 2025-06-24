@@ -44,10 +44,6 @@ entryPoints:
   websecure:
     address: ":8443"
 
-logs:
-  access:
-    enabled: true
-
 dashboard:
   enabled: true
 
