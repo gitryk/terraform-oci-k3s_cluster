@@ -7,6 +7,8 @@ defaultSettings:
   nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
   backupTarget: ""
   backupTargetCredentialSecret: ""
+  guaranteedEngineManagerCPU: 10m
+  guaranteedReplicaManagerCPU: 10m
 
 persistence:
   defaultClass: true
