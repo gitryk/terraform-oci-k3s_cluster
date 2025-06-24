@@ -4,7 +4,7 @@ metadata:
   name: traefik-logs
   namespace: longhorn-system
 spec:
-  size: 1Gi
+  size: "1073741824"
   accessMode: ReadWriteMany
   numberOfReplicas: 3
   staleReplicaTimeout: 2880
