@@ -11,7 +11,7 @@ logs:
     format: json
     filePath: /logs/traefik/access.log
     filters:
-      statuscodes: ["200-299", "400-599"]
+      statuscodes: "200-299,400-599"
     bufferingSize: 0
     fields:
     headers:
