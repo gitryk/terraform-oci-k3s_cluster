@@ -12,6 +12,3 @@ spec:
   csi:
     driver: driver.longhorn.io
     volumeHandle: traefik-logs
-    volumeAttributes:
-      numberOfReplicas: '3'
-      staleReplicaTimeout: '2880'
