@@ -2,7 +2,8 @@
 persistence:
   enabled: true
   volumeName: traefik-logs
-  storageClass: longhorn  
+  storageClass: longhorn
+  accessMode: ReadWriteMany
   path: /logs/traefik
 
 logs:
