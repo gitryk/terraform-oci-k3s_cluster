@@ -1,0 +1,11 @@
+apiVersion: longhorn.io/v1beta2
+kind: Volume
+metadata:
+  name: traefik-logs
+  namespace: longhorn-system
+spec:
+  size: 1Gi
+  accessMode: ReadWriteMany
+  numberOfReplicas: 3
+  staleReplicaTimeout: 2880
+  fromBackup: ""
