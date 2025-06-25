@@ -9,6 +9,10 @@ deployment:
       - svc.cluster.local
       - cluster.local
 
+resources:
+  requests:
+    cpu: "250m"
+
 hostNetwork: true
 
 kubernetesCRD:
