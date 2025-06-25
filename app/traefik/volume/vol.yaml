@@ -5,7 +5,7 @@ metadata:
   namespace: longhorn-system
 spec:
   size: "1073741824"
-  accessMode: ReadWriteMany
+  accessMode: rmx
   numberOfReplicas: 3
   staleReplicaTimeout: 2880
   fromBackup: ""
