@@ -30,3 +30,7 @@ variable "tail_key" {
   type      = string
   sensitive = true
 }
+variable "crowdsec_key" {
+  type      = string
+  sensitive = true
+}

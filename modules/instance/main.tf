@@ -78,14 +78,16 @@ resource "oci_core_instance" "worker" {
     user_data = base64encode(
       templatefile("./script/worker.sh", {
         node_index       = count.index
-        master_ip        = var.instance_ip[0]
-        bastion_ip       = var.instance_ip[3]
+        node_ip          = join(" ", var.instance_ip)
+        node_count       = length(var.instance_ip)
         k3s_token        = var.k3s_token
+        app_name         = var.app_name
         node_name        = "${var.app_name}-worker-${count.index}"
         domain           = var.domain
         lb_ip            = var.lb_ip
         subnet_cidr_pub  = var.subnet_cidr[0]
         subnet_cidr_priv = var.subnet_cidr[1]
+        crowdsec_key     = var.crowdsec_key
       })
     )
   }

@@ -45,13 +45,14 @@ module "instance" {
 
   vcn_id = module.vcn.vcn_id
 
-  subnet_id   = module.network.subnet_id
-  subnet_cidr = var.subnet_cidr
-  nsg_id      = module.network.nsg_id
-  instance_ip = var.instance_ip
-  lb_ip       = module.lb.lb_ip[0]
-  tail_key    = var.tail_key
-  k3s_token   = var.k3s_token
-  domain      = var.domain
+  subnet_id    = module.network.subnet_id
+  subnet_cidr  = var.subnet_cidr
+  nsg_id       = module.network.nsg_id
+  instance_ip  = var.instance_ip
+  lb_ip        = module.lb.lb_ip[0]
+  tail_key     = var.tail_key
+  k3s_token    = var.k3s_token
+  domain       = var.domain
+  crowdsec_key = var.crowdsec_key
 }
 

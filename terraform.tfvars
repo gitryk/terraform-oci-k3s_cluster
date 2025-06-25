@@ -2,7 +2,7 @@
 api_fingerprint      = ""
 api_private_key_path = "./keys/terraform/private.pem"
 region               = ""
-region_ad            = ""
+region_ad            = "vkWn:AP-CHUNCHEON-1-AD-1"
 tenancy_id           = ""
 user_id              = ""
 
@@ -50,6 +50,7 @@ nsg_rule = {
 subnet_cidr = ["192.168.82.0/25", "192.168.82.128/25"]
 
 #instance
-instance_ip = ["192.168.82.150", "192.168.82.151", "192.168.82.152", "192.168.82.200"]
-tail_key    = ""
-k3s_token   = ""
+instance_ip  = ["192.168.82.150", "192.168.82.151", "192.168.82.152", "192.168.82.200"]
+tail_key     = ""
+k3s_token    = ""
+crowdsec_key = ""
