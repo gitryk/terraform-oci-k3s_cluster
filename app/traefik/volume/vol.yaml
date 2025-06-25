@@ -8,4 +8,5 @@ spec:
   accessMode: rwx
   numberOfReplicas: 3
   staleReplicaTimeout: 2880
+  frontend: nfs
   fromBackup: ""
