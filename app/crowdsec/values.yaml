@@ -8,6 +8,10 @@ agent:
   env:
     - name: COLLECTIONS
       value: "crowdsecurity/traefik"
+  resources:
+    requests:
+      cpu: 125m
+      
 lapi:
   env:
     - name: ENROLL_KEY
@@ -16,6 +20,9 @@ lapi:
       value: "APPNAME-cluster"
     - name: ENROLL_TAGS
       value: "APPNAME"
+  resources:
+    requests:
+      cpu: 125m
 
 extraVolumes:
   - name: traefik-logs
