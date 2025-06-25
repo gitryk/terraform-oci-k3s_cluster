@@ -3,10 +3,12 @@ kind: Volume
 metadata:
   name: traefik-logs
   namespace: longhorn-system
+  finalizers:
+    - longhorn.io/volume-protection
 spec:
   size: "1073741824"
   accessMode: rwx
   numberOfReplicas: 3
   staleReplicaTimeout: 2880
-  frontend: ""
+  frontend: blockdev
   fromBackup: ""
