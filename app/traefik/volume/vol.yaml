@@ -3,8 +3,6 @@ kind: Volume
 metadata:
   name: traefik-logs
   namespace: longhorn-system
-  finalizers:
-    - longhorn.io/volume-protection
 spec:
   size: "1073741824"
   accessMode: rwx
