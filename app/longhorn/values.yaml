@@ -6,8 +6,6 @@ defaultSettings:
   nodeDownPodDeletionPolicy: delete-both-statefulset-and-deployment-pod
   backupTarget: ""
   backupTargetCredentialSecret: ""
-  guaranteedEngineManagerCPU: 10m
-  guaranteedReplicaManagerCPU: 10m
   nfsExportOptions: "nolock,async,no_root_squash"
   defaultDataPath: /var/lib/longhorn
   createDefaultDiskLabeledNodes: true
