@@ -32,11 +32,11 @@ updateStrategy:
 
 ports:
   web:
-    port: 8080
+    port: 80
     middlewares:
       - traefik-service-bouncer@kubernetescrd
   websecure:
-    port: 8443
+    port: 443
     middlewares:
       - traefik-service-bouncer@kubernetescrd
   traefik:
