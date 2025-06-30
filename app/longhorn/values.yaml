@@ -1,5 +1,4 @@
 defaultSettings:
-  defaultReplicaCount: 3
   defaultLonghornStaticStorageClass: longhorn
   replicaSoftAntiAffinity: true
   storageOverProvisioningPercentage: 200
@@ -15,7 +14,6 @@ defaultSettings:
 
 persistence:
   defaultClass: true
-  defaultClassReplicaCount: 3
 
 longhornManager:
   tolerations:
