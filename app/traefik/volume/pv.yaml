@@ -7,8 +7,7 @@ spec:
     storage: 1Gi
   accessModes:
     - ReadWriteMany
-  storageClassName: longhorn
-  persistentVolumeReclaimPolicy: Retain
+  storageClassName: longhorn-rwx
   csi:
     driver: driver.longhorn.io
     volumeHandle: traefik-logs
