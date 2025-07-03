@@ -6,17 +6,17 @@ resource "oci_core_instance" "tower" {
   availability_domain  = var.region_ad
   compartment_id       = var.compartment_id
   display_name         = "${var.app_name}-vm-tower"
-  fault_domain         = "FAULT-DOMAIN-1"
+  fault_domain         = "FAULT-DOMAIN-2"
   preserve_boot_volume = "false"
 
-  shape = "VM.Standard.A1.Flex" #ARM A1
+  shape = "VM.Standard.E2.1.Micro" #x86-64 AMD Epyc
   shape_config {
     ocpus         = 1 #core
-    memory_in_gbs = 6 #ram
+    memory_in_gbs = 1 #ram
   }
 
   source_details {
-    source_id               = data.oci_core_images.linux_image.images[0].id
+    source_id               = data.oci_core_images.x86_image.images[0].id
     source_type             = "image"
     boot_volume_size_in_gbs = 50 #boot disk 크기
   }
@@ -45,7 +45,7 @@ resource "oci_core_instance" "tower" {
     assign_private_dns_record = false
     #display_name              = "${var.app_name}-vnic-tower"
     nsg_ids    = [var.nsg_id[2]] #0:lb, 1:worker, 2:tower
-    private_ip = var.instance_ip[3]
+    private_ip = var.instance_ip[length(var.instance_ip)-1]
     subnet_id  = var.subnet_id[1] #0:public, 1:private
   }
 
@@ -53,7 +53,7 @@ resource "oci_core_instance" "tower" {
 }
 
 resource "oci_core_instance" "worker" {
-  count = length(var.instance_ip) - 1
+  count = length(var.instance_ip)-1
 
   availability_domain  = var.region_ad
   compartment_id       = var.compartment_id
@@ -68,7 +68,7 @@ resource "oci_core_instance" "worker" {
   }
 
   source_details {
-    source_id               = data.oci_core_images.linux_image.images[0].id
+    source_id               = data.oci_core_images.arm_image.images[0].id
     source_type             = "image"
     boot_volume_size_in_gbs = 50 #boot disk 크기
   }

@@ -15,7 +15,7 @@ TIME_ZONE="Asia/Seoul"
 EXTRA_INSTALL="net-tools" #필요한 패키지 기입
 
 K3S_TOKEN="${k3s_token}"
-K3S_EXEC="--disable traefik --disable servicelb  --token $K3S_TOKEN --node-name $NODE_NAME"
+K3S_EXEC="--disable traefik --disable servicelb --token $K3S_TOKEN --node-name $NODE_NAME"
 
 GIT_ADDRESS="https://raw.githubusercontent.com/gitryk/terraform-oci-k3s_cluster/refs/heads/main/app"
 USER_HOME="/home/ubuntu"
@@ -39,16 +39,16 @@ function dependency { #공통 초기화 함수
   timedatectl set-timezone $TIME_ZONE
 
   #의존성 및 추가 패키지 설치
-  apt-get install -y $EXTRA_INSTALL
   apt-get update
+  apt-get install -y $EXTRA_INSTALL
   apt-get upgrade -y
 }
 
 function install_k3s { #k3s 설치
-  net_rule_set
   if [ "$INDEX" -eq "0" ]; then #0 = 메인 서버, 아닐 경우 일반 서버
     echo "[*] Initializing K3s cluster on $NODE_NAME"
-    curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--cluster-init $K3S_EXEC" sh -
+    [ "$NODE_COUNT" -gt 1 ] && K3S_EXEC="$K3S_EXEC --cluster-init" #단일 서버일 경우 HA 선언 제거
+    curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="$K3S_EXEC" sh -
   
     #메인 서버에 접속 시 kubectl 실행(non-root) 설정
     mkdir -p $USER_HOME/.kube
@@ -95,8 +95,11 @@ function install_helm {
 function install_longhorn {
   mkdir -p /var/lib/longhorn #Create default Volume Mounting point
   fetch_app_manifests "longhorn" "values.yaml"
+
+  NODE_CNT=$((NODE_COUNT-1))
+  MAX_INDEX=$((NODE_CNT-1))
   
-  for ((i=0; i<=($NODE_COUNT-2); i++)); do
+  for ((i=0; i<=MAX_INDEX; i++)); do
     until kubectl get node "$APP_NAME-worker-$i" 2>/dev/null | grep -q " Ready "; do
       echo "Waiting for $APP_NAME-worker-$i to join cluster..."
       sleep 5
@@ -108,6 +111,8 @@ function install_longhorn {
   helm install longhorn longhorn/longhorn \
     --kubeconfig /etc/rancher/k3s/k3s.yaml \
     --namespace longhorn-system \
+    --set defaultSettings.defaultReplicaCount=$NODE_CNT \
+    --set persistence.defaultClassReplicaCount=$NODE_CNT \
     --create-namespace \
     -f $USER_HOME/app/longhorn/values.yaml
 
@@ -123,7 +128,7 @@ function install_traefik {
   echo "[*] traefik longhorn volume create.."
   kubectl apply -f $USER_HOME/app/traefik/volume/vol.yaml
   echo "[*] traefik pv create.."
-  kubectl apply -f $USER_HOME/app/traefik/volume/pv.yaml
+  #kubectl apply -f $USER_HOME/app/traefik/volume/pv.yaml
 
   echo "[*] traefik helm chart install.."
   helm install traefik traefik/traefik \
@@ -150,8 +155,8 @@ function install_crowdsec {
 
   echo "[*] crowdsec pvc, configmap create.."
   kubectl create namespace crowdsec-service
-  kubectl apply -f $USER_HOME/app/crowdsec/volume.yaml
-  kubectl apply -f $USER_HOME/app/crowdsec/configmap.yaml
+  #kubectl apply -f $USER_HOME/app/crowdsec/volume.yaml
+  #kubectl apply -f $USER_HOME/app/crowdsec/configmap.yaml
 
   echo "[*] crowdsec helm chart install.."
   helm install crowdsec crowdsec/crowdsec \
@@ -159,8 +164,8 @@ function install_crowdsec {
     --namespace crowdsec-service \
     -f $USER_HOME/app/crowdsec/values.yaml
 
-  echo "[*] Waiting for LAPI Pod to become ready (timeout 180s)..."
-  kubectl wait --namespace crowdsec-service --for=condition=ready pod -l k8s-app=crowdsec,type=lapi --timeout=180s
+  echo "[*] Waiting for LAPI Pod to become ready (timeout 300s)..."
+  kubectl wait --namespace crowdsec-service --for=condition=ready pod -l k8s-app=crowdsec,type=lapi --timeout=300s
 
   LAPI_POD=$(kubectl -n crowdsec-service get pods -l 'k8s-app=crowdsec,type=lapi' -o jsonpath='{.items[0].metadata.name}')
   BOUNCER_KEY=$(kubectl -n crowdsec-service exec -i "$LAPI_POD" -- cscli bouncers add traefik-bouncer | sed -n '3p' | xargs)
@@ -224,6 +229,7 @@ function fetch_app_manifests() {
 disable_ipv6
 dependency
 install_k3s
+net_rule_set
 if [ "$INDEX" -eq "0" ]; then
   install_helm
   install_longhorn
@@ -232,6 +238,6 @@ if [ "$INDEX" -eq "0" ]; then
   install_crowdsec  
 fi
 
-set +e #어떤 에러가 발생하더라도 cloud-init 결과물을 홈 디렉토리에 생성하도록 하기 
+set +e #어떤 에러가 발생하더라도 cloud-init 결과물을 홈 디렉토리에 생성하도록 하기
 install -o ubuntu -g ubuntu -m 644 /var/log/cloud-init-output.log $USER_HOME/init_log.txt || true
 set -e

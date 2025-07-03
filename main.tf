@@ -34,7 +34,6 @@ module "lb" {
   instance_ip = var.instance_ip
 }
 
-
 module "instance" {
   source         = "./modules/instance"
   app_name       = var.app_name
@@ -55,4 +54,3 @@ module "instance" {
   domain       = var.domain
   crowdsec_key = var.crowdsec_key
 }
-
